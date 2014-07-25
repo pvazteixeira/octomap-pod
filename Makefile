@@ -22,8 +22,19 @@ ifeq "$(BUILD_TYPE)" ""
 BUILD_TYPE="Release"
 endif
 
+OCTOMAP_INSTALL_LIBS = liboctomath.1.6.6.dylib \
+	liboctomap.1.6.6.dylib
+
 all: pod-build/Makefile
 	$(MAKE) -C pod-build all install
+ifeq ($(shell uname), Darwin)
+	@for lib in $(OCTOMAP_INSTALL_LIBS); do \
+		install_name_tool -id $(BUILD_PREFIX)/lib/$$lib $(BUILD_PREFIX)/lib/$$lib; \
+		for deplib in $(OCTOMAP_INSTALL_LIBS); do \
+			install_name_tool -change $$deplib $(BUILD_PREFIX)/lib/$$deplib $(BUILD_PREFIX)/lib/$$lib; \
+		done; \
+	done
+endif
 
 pod-build/Makefile:
 	$(MAKE) configure
