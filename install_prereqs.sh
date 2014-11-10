@@ -4,6 +4,7 @@ case $1 in
   ("homebrew")
     brew install cmake doxygen ;;
   ("macports")
+    ;;
   ("ubuntu")
     apt-get install build-essential cmake doxygen ;; #libqt4-dev libqt4-opengl-dev libqglviewer-qt4-dev ;;
   ("cygwin")
